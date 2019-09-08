@@ -1,0 +1,21 @@
+#!/usr/bin/python
+import cgi
+print "Status: 200 OK\r\n"
+
+import serial
+import time
+import cgitb; cgitb.enable(display=1, logdir="/home/pi/Desktop") # optional; for debugging only
+arguments=cgi.FieldStorage()
+
+myres=""
+conn="/dev/ttyACM2"
+ser=serial.Serial(conn,9600)
+ser.close()
+ser.open()
+print "Content-Type: text/html\n\n"
+arg=str(arguments.getvalue('flag'))
+length=int(arguments.getvalue('len'))
+
+ser.write(str(arg)+"*"+str(length)+"*")
+print (ser.readline())
+ser.close()
